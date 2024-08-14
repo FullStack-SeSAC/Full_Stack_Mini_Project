@@ -31,12 +31,17 @@ function App() {
     console.log("new item ->", newItem);
     setTodoItems([...todoItems, newItem]);
   };
+
+  const deleteItem = (targetItem) => {
+    const newTodoItems = todoItems.filter((e) => e.id !== targetItem.id);
+    setTodoItems(newTodoItems);
+  };
   return (
     <div className="App">
       <AddTodo addItem={addItem} />
       {todoItems.map((item) => {
         console.log("item ->", item);
-        return <Todo key={item.id} item={item} />;
+        return <Todo key={item.id} item={item} deleteItem={deleteItem} />;
       })}
     </div>
   );
