@@ -1,10 +1,17 @@
 import React from "react";
 
-export default function Todo() {
+export default function Todo({ item }) {
+  console.log("Todo-item ->", item);
   return (
     <div>
-      <input type="checkbox" id="todo0" name="todo0" value="todo0" />
-      <label htmlFor="todo0">My todo</label>
+      <input
+        type="checkbox"
+        id={`todo${item.id}`}
+        name={`todo${item.id}`}
+        value={`todo${item.id}`}
+        defaultChecked={item.done} // ture: o, false: x
+      />
+      <label htmlFor="todo0">{item.title}</label>
     </div>
   );
 }
