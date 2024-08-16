@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const PORT = 8080;
 const cors = require("cors");
 
 app.use(express.urlencoded({ extended: true }));
@@ -10,17 +9,32 @@ app.use(express.json());
 app.use(cors());
 
 const todoRouter = require("./routes/todo");
+const { sequelize } = require("./models");
 app.use("/api", todoRouter); // 기본 주소: localhost:PORT/api
 
 app.get("/", (req, res) => {
   res.send("hello");
 });
 
-// app.get(*, res)
-
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+app.get("*", (_, res) => {
+  res.send("404 Error!");
 });
+
+const port = process.env.PORT || 8080;
+
+sequelize.sync({ force: false }).then(() => {
+  app.listen(port, () => {
+    console.log(`http://localhost:${port}`);
+  });
+});
+
+/**
+ * sequelize.sync({ force: sync})
+ *  - 이미 존재하는 테이블이 있다면, 그 테이블을 지우지 않고 유지
+ *  - 새로운 테이블을 추가하거나 필요한 경우 스키마를 업데이트
+ *
+ *  - 서버 시작전, Sequelize를 사용해 DB와 모델간의 동기화 수행
+ */
 
 /**
  * CORS 사용법
